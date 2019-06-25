@@ -18,7 +18,7 @@ Things you may want to cover:
 `bundle exec rake db:drop`
 `bundle exec rake db:create`
 `bundle exec rake db:migrate`
-`bundle exec rake csv_import:run_all`
+`bundle exec rake csv_import`
 
 * How to run the test suite
 
