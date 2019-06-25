@@ -69,4 +69,8 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  def parse_api_1point0_response
+    JSON.parse(response.body)["data"]
+  end
 end
