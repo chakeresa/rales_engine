@@ -7,14 +7,6 @@ namespace :csv_import do
     success_count = 0
     Item.destroy_all
     CSV.foreach('./public/data/items.csv', headers: true) do |row|
-      # item = Item.new(id:          row[:id],
-      #                 name:        row[:name],
-      #                 description: row[:description],
-      #                 unit_price:  row[:unit_price],
-      #                 merchant:    Merchant.find(row[:id]),
-      #                 created_at:  row[:created_at],
-      #                 updated_at:  row[:updated_at]
-      # )
       item = Item.new(row.to_h)
       if item.save
         print ".".green
