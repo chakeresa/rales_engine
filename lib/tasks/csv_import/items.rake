@@ -5,7 +5,10 @@ namespace :csv_import do
   task items: :environment do
     row_count = 0
     success_count = 0
+    puts "Destroying all items... ".yellow
     Item.destroy_all
+    puts "done".green
+    puts "Importing items...".yellow
     CSV.foreach('./public/data/items.csv', headers: true) do |row|
       item = Item.new(row.to_h)
       if item.save

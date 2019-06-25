@@ -5,18 +5,20 @@ namespace :csv_import do
   task invoices: :environment do
     row_count = 0
     success_count = 0
+    puts "Destroying all invoices... ".yellow
     Invoice.destroy_all
+    puts "done".green
+    puts "Importing invoices...".yellow
     CSV.foreach('./public/data/invoices.csv', headers: true) do |row|
       invoice = Invoice.new(row.to_h)
       if invoice.save!
-        print ".".green
+        puts "ID #{row["id"]} done".green if row["id"].to_i % 1000 == 0
         success_count += 1
       else
-        print "X".red
+        puts "ID #{row["id"]} failed".red
       end
       row_count += 1
     end
-    require "pry"; binding.pry
-    puts "\n#{success_count} invoices created from #{row_count} CSV rows".yellow
+    puts "#{success_count} invoices created from #{row_count} CSV rows".yellow
   end
 end

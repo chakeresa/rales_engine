@@ -5,7 +5,10 @@ namespace :csv_import do
   task merchants: :environment do
     row_count = 0
     success_count = 0
+    puts "Destroying all merchants... ".yellow
     Merchant.destroy_all
+    puts "done".green
+    puts "Importing merchants...".yellow
     CSV.foreach('./public/data/merchants.csv', headers: true) do |row|
       merchant = Merchant.new(row.to_h)
       if merchant.save
