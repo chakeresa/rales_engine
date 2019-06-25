@@ -21,5 +21,15 @@ RSpec.describe CsvImporter, type: :service do
       expect(InvoiceItem.count).to eq(11)
       expect(Transaction.count).to eq(12)
     end
+
+    it "dot output doesn't error out when failed to create resources" do
+      CsvImporter.new(["test_bad_merchant", Merchant, false]).import
+      expect(Merchant.count).to eq(2) # 1 bad import
+    end
+
+    it "1000 output doesn't error out when failed to create resources" do
+      CsvImporter.new(["test_bad_merchant", Merchant, true]).import
+      expect(Merchant.count).to eq(2) # 1 bad import
+    end
   end
 end
