@@ -14,6 +14,11 @@ Things you may want to cover:
 * Database creation
 
 * Database initialization
+`bundle`
+`bundle exec rake db:drop`
+`bundle exec rake db:create`
+`bundle exec rake db:migrate`
+`bundle exec rake csv_import:run_all`
 
 * How to run the test suite
 
