@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe CsvImporter, type: :service do
   describe "instance methods" do
     it "imports CSVs" do
-      tables = [["test_merchant", "Merchant", false],
-               ["test_item", "Item", false],
-               ["test_customer", "Customer", false],
-               ["test_invoice", "Invoice", true],
-               ["test_invoice_item", "InvoiceItem", true],
-               ["test_transaction", "Transaction", true],
+      tables = [["test_merchant", Merchant, false],
+               ["test_item", Item, false],
+               ["test_customer", Customer, false],
+               ["test_invoice", Invoice, true],
+               ["test_invoice_item", InvoiceItem, true],
+               ["test_transaction", Transaction, true],
       ]
       tables.each do |table|
         CsvImporter.new(table).import
