@@ -1,35 +1,38 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::MerchantsController do
-  # describe "GET #index" do
-  #   before(:each) do
-  #     @count = 5
-  #     @first_merchant = create(:merchant)
-  #     create_list(:merchant, @count - 1)
-  #     get '/api/v1/merchants'
-  #   end
-  #
-  #   it "returns http success" do
-  #     expect(response).to have_http_status(:success)
-  #   end
-  #
-  #   it "outputs data for all merchants" do
-  #     merchants = parse_api_1point0_response
-  #
-  #     expect(merchants.class).to eq(Array)
-  #     expect(merchants.count).to eq(@count)
-  #
-  #     expected_first =  {
-  #       "id" => @first_merchant.id.to_s,
-  #       "type" => "merchant",
-  #       "attributes" => {
-  #         "id" => @first_merchant.id,
-  #         "name" => @first_merchant.name
-  #       }
-  #     }
-  #     expect(merchants.first).to eq(expected_first)
-  #   end
-  # end
+  describe "GET #index" do
+    before(:each) do
+      @count = 5
+      @name = "Bob"
+      @first_merchant = create(:merchant, name: @name)
+      @sec_merchant = create(:merchant, name: @name)
+      create_list(:merchant, @count - 2)
+    end
+
+    it "returns http success" do
+      get "/api/v1/merchants/find_all?name=#{@name}"
+      expect(response).to have_http_status(:success)
+    end
+
+    it "outputs data for all merchants with a particular name" do
+      get "/api/v1/merchants/find_all?name=#{@name}"
+      merchants = parse_api_1point0_response
+
+      expect(merchants.class).to eq(Array)
+      expect(merchants.count).to eq(2)
+
+      expected_first =  {
+        "id" => @first_merchant.id.to_s,
+        "type" => "merchant",
+        "attributes" => {
+          "id" => @first_merchant.id,
+          "name" => @name
+        }
+      }
+      expect(merchants.first).to eq(expected_first)
+    end
+  end
 
   describe "GET #show" do
     before(:each) do

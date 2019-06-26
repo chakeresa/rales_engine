@@ -5,6 +5,10 @@ class Merchant < ApplicationRecord
   validates_presence_of :name
 
   def self.search(search_hash)
-    where(search_hash).first
+    search_all(search_hash).first
+  end
+
+  def self.search_all(search_hash)
+    where(search_hash)
   end
 end

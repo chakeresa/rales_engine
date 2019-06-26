@@ -13,7 +13,10 @@ RSpec.describe Merchant, type: :model do
   describe "class methods" do
     before(:each) do
       @count = 5
-      create_list(:merchant, @count)
+      @name = "Bob"
+      @first_merchant = create(:merchant, name: @name)
+      @sec_merchant = create(:merchant, name: @name)
+      create_list(:merchant, @count - 2)
     end
 
     it "::search by id" do
@@ -23,7 +26,7 @@ RSpec.describe Merchant, type: :model do
     end
 
     it "::search by name" do
-      merch_to_find = Merchant.all.second
+      merch_to_find = Merchant.all.last
 
       expect(Merchant.search(name: merch_to_find.name)).to eq(merch_to_find)
     end
@@ -38,6 +41,28 @@ RSpec.describe Merchant, type: :model do
       merch_to_find = Merchant.all.second
 
       expect(Merchant.search(updated_at: merch_to_find.updated_at)).to eq(merch_to_find)
+    end
+
+    it "::search_all by id" do
+      merch_to_find = Merchant.all.second
+
+      expect(Merchant.search_all(id: merch_to_find.id)).to eq([merch_to_find])
+    end
+
+    it "::search_all by name" do
+      expect(Merchant.search_all(name: @name)).to eq([@first_merchant, @sec_merchant])
+    end
+
+    xit "::search_all by created_at" do
+      merch_to_find = Merchant.all.second
+
+      expect(Merchant.search_all(created_at: merch_to_find.created_at)).to eq([merch_to_find])
+    end
+
+    xit "::search_all by updated_at" do
+      merch_to_find = Merchant.all.second
+
+      expect(Merchant.search_all(updated_at: merch_to_find.updated_at)).to eq([merch_to_find])
     end
   end
 end
