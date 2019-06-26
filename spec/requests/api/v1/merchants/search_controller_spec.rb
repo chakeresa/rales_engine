@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::MerchantsController do
+RSpec.describe Api::V1::Merchants::SearchController do
   describe "GET #index" do
     before(:each) do
       @count = 5
