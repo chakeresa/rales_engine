@@ -16,7 +16,7 @@ RSpec.describe Merchant, type: :model do
       @name = "Bob"
       @first_merchant = create(:merchant, name: @name)
       @sec_merchant = create(:merchant, name: @name)
-      create_list(:merchant, @count - 2)
+      @m3, @m4, @m5 = create_list(:merchant, @count - 2)
     end
 
     it "::search by id" do
@@ -63,6 +63,10 @@ RSpec.describe Merchant, type: :model do
       merch_to_find = Merchant.all.second
 
       expect(Merchant.search_all(updated_at: merch_to_find.updated_at)).to eq([merch_to_find])
+    end
+
+    it "::random" do
+      expect(Merchant.random).to satisfy { |actual| [@first_merchant, @sec_merchant, @m3, @m4, @m5].include?(actual) }
     end
   end
 

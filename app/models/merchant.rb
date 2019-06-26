@@ -12,6 +12,10 @@ class Merchant < ApplicationRecord
     where(search_hash)
   end
 
+  def self.random
+    find(self.pluck(:id).sample)
+  end
+
   def self.top_x_by_revenue(limit)
     self.joins(invoices: :invoice_items)
         .select(:id, :name)
