@@ -85,6 +85,10 @@ RSpec.describe Merchant, type: :model do
 
       # @m3 revenue = 3*700*1 = 2100
       @ii311, @ii312, @ii313 = create_list(:invoice_item, 3, invoice: @i31, quantity: 700, unit_price: 1)
+
+      # @m4 has no invoices/revenue -- will not show up at all
+
+      # TO DO: add failed transactions corresponding with these invoices. If an invoice has only "failed" for all transaction "result"s (no "succcess"), that invoice should not be counted towards revenue. Check that invoice status is "shipped"?
     end
 
     it "::top_x_by_revenue" do
