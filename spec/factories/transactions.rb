@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :transaction do
-    invoice { nil }
-    credit_card_number { "MyString" }
-    credit_card_expiration_date { "MyString" }
-    result { "MyString" }
+    association :invoice, factory: :invoice
+    sequence(:credit_card_number) { |n| (4000000000000 + n).to_s }
+    sequence(:credit_card_expiration_date) { |n| "08/#{ 2000 + n }" }
+    result { "success" }
   end
 end
