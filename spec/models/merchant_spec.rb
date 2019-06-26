@@ -14,9 +14,9 @@ RSpec.describe Merchant, type: :model do
     before(:each) do
       @count = 5
       @name = "Bob"
-      @first_merchant = create(:merchant, name: @name)
-      @sec_merchant = create(:merchant, name: @name)
-      @m3, @m4, @m5 = create_list(:merchant, @count - 2)
+      @first_merchant = create(:merchant, name: @name, created_at: "2012-03-27 14:53:59 UTC", updated_at: "2013-03-27 14:53:59 UTC")
+      @sec_merchant = create(:merchant, name: @name, created_at: "2013-03-27 14:53:59 UTC", updated_at: "2014-03-27 14:53:59 UTC")
+      @m3, @m4, @m5 = create_list(:merchant, @count - 2, created_at: "2014-03-27 14:53:59 UTC", updated_at: "2015-03-27 14:53:59 UTC")
     end
 
     it "::search by id" do
@@ -31,13 +31,13 @@ RSpec.describe Merchant, type: :model do
       expect(Merchant.search(name: merch_to_find.name)).to eq(merch_to_find)
     end
 
-    xit "::search by created_at" do
+    it "::search by created_at" do
       merch_to_find = Merchant.all.second
 
       expect(Merchant.search(created_at: merch_to_find.created_at)).to eq(merch_to_find)
     end
 
-    xit "::search by updated_at" do
+    it "::search by updated_at" do
       merch_to_find = Merchant.all.second
 
       expect(Merchant.search(updated_at: merch_to_find.updated_at)).to eq(merch_to_find)
@@ -53,16 +53,16 @@ RSpec.describe Merchant, type: :model do
       expect(Merchant.search_all(name: @name)).to eq([@first_merchant, @sec_merchant])
     end
 
-    xit "::search_all by created_at" do
-      merch_to_find = Merchant.all.second
+    it "::search_all by created_at" do
+      merch_to_find = Merchant.all.last
 
-      expect(Merchant.search_all(created_at: merch_to_find.created_at)).to eq([merch_to_find])
+      expect(Merchant.search_all(created_at: merch_to_find.created_at)).to eq([@m3, @m4, @m5])
     end
 
-    xit "::search_all by updated_at" do
-      merch_to_find = Merchant.all.second
+    it "::search_all by updated_at" do
+      merch_to_find = Merchant.all.last
 
-      expect(Merchant.search_all(updated_at: merch_to_find.updated_at)).to eq([merch_to_find])
+      expect(Merchant.search_all(updated_at: merch_to_find.updated_at)).to eq([@m3, @m4, @m5])
     end
 
     it "::random" do

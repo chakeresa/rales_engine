@@ -36,9 +36,9 @@ RSpec.describe Api::V1::Merchants::SearchController do
 
   describe "GET #show" do
     before(:each) do
-      @count = 5
-      @first_merchant = create(:merchant, name: "Bob")
-      @other_merchants =  create_list(:merchant, @count - 1)
+      @count = 3
+      @first_merchant = create(:merchant, name: "Bob", created_at: "2012-03-27 14:53:59 UTC", updated_at: "2013-03-27 14:53:59 UTC")
+      @other_merchants =  create_list(:merchant, @count - 1, created_at: "2014-03-27 14:53:59 UTC", updated_at: "2015-03-27 14:53:59 UTC")
     end
 
     it "returns http success" do
@@ -78,7 +78,7 @@ RSpec.describe Api::V1::Merchants::SearchController do
       expect(merchant_json).to eq(expected_hash)
     end
 
-    xit "finds a merchant by created_at" do
+    it "finds a merchant by created_at" do
       merchant_resource = @other_merchants.first
       get "/api/v1/merchants/find?created_at=#{merchant_resource.created_at}"
       merchant_json = parse_api_1point0_response
@@ -94,7 +94,7 @@ RSpec.describe Api::V1::Merchants::SearchController do
       expect(merchant_json).to eq(expected_hash)
     end
 
-    xit "finds a merchant by updated_at" do
+    it "finds a merchant by updated_at" do
       merchant_resource = @other_merchants.first
       get "/api/v1/merchants/find?updated_at=#{merchant_resource.updated_at}"
       merchant_json = parse_api_1point0_response
