@@ -26,7 +26,8 @@ RSpec.describe Api::V1::Merchants::InvoicesController do
         "attributes" => {
           "id" => @i1.id,
           "customer_id" => @i1.customer_id,
-          "merchant_id" => @i1.merchant_id
+          "merchant_id" => @i1.merchant_id,
+          "status" => @i1.status
         }
       }
       expect(invoices.first).to eq(expected_first)
