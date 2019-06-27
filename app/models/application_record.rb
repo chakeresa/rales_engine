@@ -9,6 +9,10 @@ class ApplicationRecord < ActiveRecord::Base
     where(search_hash).order(:id)
   end
 
+  def self.random
+    find(self.pluck(:id).sample)
+  end
+
   private
 
   def self.date_criteria(date)

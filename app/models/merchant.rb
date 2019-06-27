@@ -5,10 +5,6 @@ class Merchant < ApplicationRecord
 
   validates_presence_of :name
 
-  def self.random
-    find(self.pluck(:id).sample)
-  end
-
   def self.top_x_by_revenue(limit)
     self.select(:id, :name)
         .select("SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue")
