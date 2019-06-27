@@ -73,4 +73,8 @@ RSpec.configure do |config|
   def parse_api_1point0_response
     JSON.parse(response.body)["data"]
   end
+
+  def format_price(price)
+    '%.2f' % (price / 100.00)
+  end
 end

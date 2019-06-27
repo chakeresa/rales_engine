@@ -19,8 +19,6 @@ RSpec.describe Api::V1::ItemsController do
       expect(items.class).to eq(Array)
       expect(items.count).to eq(@count)
 
-      expected_price = '%.2f' % (@first_item.unit_price / 100.00)
-
       expected_first =  {
         "id" => @first_item.id.to_s,
         "type" => "item",
@@ -28,7 +26,7 @@ RSpec.describe Api::V1::ItemsController do
           "id" => @first_item.id,
           "name" => @first_item.name,
           "description" => @first_item.description,
-          "unit_price" => expected_price,
+          "unit_price" => format_price(@first_item.unit_price),
           "merchant_id" => @first_item.merchant_id
         }
       }
@@ -54,8 +52,6 @@ RSpec.describe Api::V1::ItemsController do
 
       expect(item.class).to eq(Hash)
 
-      expected_price = '%.2f' % (@first_item.unit_price / 100.00)
-
       expected_hash =  {
         "id" => @first_item.id.to_s,
         "type" => "item",
@@ -63,7 +59,7 @@ RSpec.describe Api::V1::ItemsController do
           "id" => @first_item.id,
           "name" => @first_item.name,
           "description" => @first_item.description,
-          "unit_price" => expected_price,
+          "unit_price" => format_price(@first_item.unit_price),
           "merchant_id" => @first_item.merchant_id
         }
       }

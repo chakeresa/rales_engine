@@ -20,8 +20,6 @@ RSpec.describe Api::V1::Merchants::ItemsController do
       expect(items.class).to eq(Array)
       expect(items.count).to eq(3)
 
-      expected_price = '%.2f' % (@i1.unit_price / 100.00)
-
       expected_first =  {
         "id" => @i1.id.to_s,
         "type" => "item",
@@ -29,7 +27,7 @@ RSpec.describe Api::V1::Merchants::ItemsController do
           "id" => @i1.id,
           "name" => @i1.name,
           "description" => @i1.description,
-          "unit_price" => expected_price,
+          "unit_price" => format_price(@i1.unit_price),
           "merchant_id" => @i1.merchant_id
         }
       }
