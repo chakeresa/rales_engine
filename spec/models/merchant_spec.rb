@@ -122,7 +122,7 @@ RSpec.describe Merchant, type: :model do
       expect(top_2_revenues_actual).to eq(top_2_revenues_expected)
     end
 
-    it "::top_x_by_items_sold_ct" do
+    xit "::top_x_by_items_sold_ct" do
       # expect(Merchant.top_x_by_items_sold_ct(1)).to eq([@m2])
       # expect(Merchant.top_x_by_items_sold_ct(2)).to eq([@m2, @m3])
       # expect(Merchant.top_x_by_items_sold_ct(3)).to eq([@m2, @m3, @m1])
