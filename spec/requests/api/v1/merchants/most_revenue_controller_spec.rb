@@ -9,9 +9,12 @@ RSpec.describe Api::V1::Merchants::MostRevenueController do
       @dt1 = "2012-03-16 00:54:09 UTC"
       @dt2 = "2012-03-16 00:12:09 UTC"
 
-      @i11, @i12, @i13, @i14 = create_list(:invoice, 4, merchant: @m1, created_at: @dt1)
-      @i21, @i22 = create_list(:invoice, 2, merchant: @m2)
-      @i31 = create(:invoice, merchant: @m3, created_at: @dt2)
+      @c1, @c2, @c3, @c4 = create_list(:customer, 4)
+
+      @i11 = create(:invoice, merchant: @m1, customer: @c1, created_at: @dt1)
+      @i12, @i13, @i14 = create_list(:invoice, 3, merchant: @m1, customer: @c2, created_at: @dt1)
+      @i21, @i22 = create_list(:invoice, 2, merchant: @m2, customer: @c2)
+      @i31 = create(:invoice, merchant: @m3, customer: @c3, created_at: @dt2)
 
       @t111 = create(:transaction, invoice: @i11)
       @t121 = create(:transaction, invoice: @i12)
