@@ -136,5 +136,17 @@ RSpec.describe Merchant, type: :model do
       top_2_counts_actual = Merchant.top_x_by_items_sold_ct(2).map(&:item_ct)
       expect(top_2_counts_actual).to eq(top_2_counts_expected)
     end
+
+    it "#revenue_by_date" do
+      expect(@m1.revenue_by_date(nil)).to eq(257)
+      expect(@m2.revenue_by_date(nil)).to eq(42200)
+      expect(@m3.revenue_by_date(nil)).to eq(2100)
+      expect(@m4.revenue_by_date(nil)).to eq(0)
+
+      expect(@m1.revenue_by_date(@date)).to eq(257)
+      expect(@m2.revenue_by_date(@date)).to eq(0)
+      expect(@m3.revenue_by_date(@date)).to eq(2100)
+      expect(@m4.revenue_by_date(@date)).to eq(0)
+    end
   end
 end

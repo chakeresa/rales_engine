@@ -35,4 +35,8 @@ class Merchant < ApplicationRecord
         .order("item_ct DESC")
         .limit(limit)
   end
+
+  def revenue_by_date(date = nil)
+    invoices.revenue_by_date(date)
+  end
 end
