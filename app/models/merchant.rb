@@ -1,5 +1,6 @@
 class Merchant < ApplicationRecord
   has_many :invoices, dependent: :destroy
+  has_many :customers, through: :invoices
   has_many :items, dependent: :destroy
 
   validates_presence_of :name
@@ -38,5 +39,15 @@ class Merchant < ApplicationRecord
 
   def revenue_by_date(date = nil)
     invoices.revenue_by_date(date)
+  end
+
+  def favorite_customer
+    customers.select(:id, :first_name, :last_name)
+             .select("COUNT(invoices.id) AS invoice_ct")
+             .joins("INNER JOIN transactions ON invoices.id = transactions.invoice_id")
+             .merge(Transaction.successful)
+             .group(:id)
+             .order("invoice_ct DESC")
+             .first
   end
 end
