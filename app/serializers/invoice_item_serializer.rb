@@ -1,6 +1,6 @@
-class ItemSerializer < BaseSerializer
+class InvoiceItemSerializer < BaseSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :description, :merchant_id
+  attributes :id, :item_id, :invoice_id, :quantity
 
   attributes :unit_price do |item|
     format_price(item.unit_price)
