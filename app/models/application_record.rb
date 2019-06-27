@@ -1,6 +1,18 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
+  def self.search(search_hash)
+    search_all(search_hash).first
+  end
+
+  def self.search_all(search_hash)
+    where(search_hash).order(:id)
+  end
+
+  def self.random
+    find(self.pluck(:id).sample)
+  end
+
   private
 
   def self.date_criteria(date)

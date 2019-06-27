@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :item do
-    name { "MyString" }
-    description { "MyText" }
-    unit_price { 1 }
+    sequence(:name) { |n| "Item Name #{n}" }
+    sequence(:description) { |n| "Item Description #{n}" }
+    sequence(:unit_price) { |n| 500 + n }
     association :merchant, factory: :merchant
   end
 end

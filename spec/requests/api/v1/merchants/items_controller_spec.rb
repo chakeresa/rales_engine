@@ -27,7 +27,7 @@ RSpec.describe Api::V1::Merchants::ItemsController do
           "id" => @i1.id,
           "name" => @i1.name,
           "description" => @i1.description,
-          "unit_price" => @i1.unit_price,
+          "unit_price" => format_price(@i1.unit_price),
           "merchant_id" => @i1.merchant_id
         }
       }
