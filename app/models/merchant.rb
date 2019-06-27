@@ -5,14 +5,6 @@ class Merchant < ApplicationRecord
 
   validates_presence_of :name
 
-  def self.search(search_hash)
-    search_all(search_hash).first
-  end
-
-  def self.search_all(search_hash)
-    where(search_hash)
-  end
-
   def self.random
     find(self.pluck(:id).sample)
   end
