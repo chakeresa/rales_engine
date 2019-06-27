@@ -1,15 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Invoice, type: :model do
-  describe "relationships" do
-    it { should belong_to :customer }
-    it { should belong_to :merchant }
-    it { should have_many :transactions }
-    it { should have_many(:invoice_items) }
-    it { should have_many(:items).through(:invoice_items) }
-  end
-
-  describe "business logic" do
+RSpec.describe Api::V1::Merchants::FavoriteCustomerController do
+  describe "GET #show" do
     before(:each) do
       @m1, @m2, @m3, @m4 = create_list(:merchant, 4)
 
@@ -49,8 +41,25 @@ RSpec.describe Invoice, type: :model do
       # @m4 has no invoices/revenue -- will not show up at all
     end
 
-    it "::revenue_by_date" do
-      expect(Invoice.revenue_by_date(@date)).to eq(257 + 2100)
+    it "returns http success" do
+      get "/api/v1/merchants/#{@m1.id}/favorite_customer"
+      expect(response).to have_http_status(:success)
+    end
+
+    it "outputs data for a merchant's customer with the most successful transactions" do
+      get "/api/v1/merchants/#{@m1.id}/favorite_customer"
+      actual = parse_api_1point0_response
+
+      expected =  {
+        "id" => @c2.id.to_s,
+        "type" => "customer",
+        "attributes" => {
+          "id" => @c2.id,
+          "first_name" => @c2.first_name,
+          "last_name" => @c2.last_name
+        }
+      }
+      expect(actual).to eq(expected)
     end
   end
 end

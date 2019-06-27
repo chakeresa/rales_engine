@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Merchant, type: :model do
   describe "relationships" do
     it { should have_many :invoices }
+    it { should have_many(:customers).through(:invoices) }
     it { should have_many :items }
   end
 
@@ -74,9 +75,16 @@ RSpec.describe Merchant, type: :model do
     before(:each) do
       @m1, @m2, @m3, @m4 = create_list(:merchant, 4)
 
-      @i11, @i12, @i13, @i14 = create_list(:invoice, 4, merchant: @m1)
-      @i21, @i22 = create_list(:invoice, 2, merchant: @m2)
-      @i31 = create(:invoice, merchant: @m3)
+      @date = "2012-03-16"
+      @dt1 = "2012-03-16 00:54:09 UTC"
+      @dt2 = "2012-03-16 00:12:09 UTC"
+
+      @c1, @c2, @c3, @c4 = create_list(:customer, 4)
+
+      @i11 = create(:invoice, merchant: @m1, customer: @c1, created_at: @dt1)
+      @i12, @i13, @i14 = create_list(:invoice, 3, merchant: @m1, customer: @c2, created_at: @dt1)
+      @i21, @i22 = create_list(:invoice, 2, merchant: @m2, customer: @c2)
+      @i31 = create(:invoice, merchant: @m3, customer: @c3, created_at: @dt2)
 
       @t111 = create(:transaction, invoice: @i11)
       @t121 = create(:transaction, invoice: @i12)
@@ -87,17 +95,17 @@ RSpec.describe Merchant, type: :model do
       @t221 = create(:transaction, invoice: @i22)
       @t311 = create(:transaction, invoice: @i31)
 
-      # @m1 revenue = 3*1 + 2*2*46 + 2*7*5 + 0 = 257
+      # @m1 revenue = 3*1 + 2*2*46 + 2*7*5 + 0 = 257. item_ct = 3 + 2*2 + 2*7 + 0 = 21
       @ii111 = create(:invoice_item, invoice: @i11, quantity: 3, unit_price: 1)
       @ii121, @ii122 = create_list(:invoice_item, 2, invoice: @i12, quantity: 2, unit_price: 46)
       @ii131, @ii132 = create_list(:invoice_item, 2, invoice: @i13, quantity: 7, unit_price: 5)
       @ii141 = create(:invoice_item, invoice: @i14, quantity: 400, unit_price: 57) # no successful transactions - not included
 
-      # @m2 revenue = 2*20*75 + 2*35*560 = 42200
+      # @m2 revenue = 2*20*75 + 2*35*560 = 42200. item_ct = 2*20 + 2*35 = 110
       @ii211, @ii212 = create_list(:invoice_item, 2, invoice: @i21, quantity: 20, unit_price: 75)
       @ii221, @ii222 = create_list(:invoice_item, 2, invoice: @i22, quantity: 35, unit_price: 560)
 
-      # @m3 revenue = 3*700*1 = 2100
+      # @m3 revenue = 3*700*1 = 2100. item_ct = 3*700 = 2100
       @ii311, @ii312, @ii313 = create_list(:invoice_item, 3, invoice: @i31, quantity: 700, unit_price: 1)
 
       # @m4 has no invoices/revenue -- will not show up at all
@@ -116,6 +124,40 @@ RSpec.describe Merchant, type: :model do
       top_2_revenues_expected = [42200, 2100]
       top_2_revenues_actual = Merchant.top_x_by_revenue(2).map(&:revenue)
       expect(top_2_revenues_actual).to eq(top_2_revenues_expected)
+    end
+
+    it "::top_x_by_items_sold_ct" do
+      expect(Merchant.top_x_by_items_sold_ct(1)).to eq([@m3])
+      expect(Merchant.top_x_by_items_sold_ct(2)).to eq([@m3, @m2])
+      expect(Merchant.top_x_by_items_sold_ct(3)).to eq([@m3, @m2, @m1])
+      expect(Merchant.top_x_by_items_sold_ct(4)).to eq([@m3, @m2, @m1])
+
+      top_3_counts_expected = [2100, 110, 21]
+      top_3_counts_actual = Merchant.top_x_by_items_sold_ct(3).map(&:item_ct)
+      expect(top_3_counts_actual).to eq(top_3_counts_expected)
+
+      top_2_counts_expected = [2100, 110]
+      top_2_counts_actual = Merchant.top_x_by_items_sold_ct(2).map(&:item_ct)
+      expect(top_2_counts_actual).to eq(top_2_counts_expected)
+    end
+
+    it "#revenue_by_date" do
+      expect(@m1.revenue_by_date(nil)).to eq(257)
+      expect(@m2.revenue_by_date(nil)).to eq(42200)
+      expect(@m3.revenue_by_date(nil)).to eq(2100)
+      expect(@m4.revenue_by_date(nil)).to eq(0)
+
+      expect(@m1.revenue_by_date(@date)).to eq(257)
+      expect(@m2.revenue_by_date(@date)).to eq(0)
+      expect(@m3.revenue_by_date(@date)).to eq(2100)
+      expect(@m4.revenue_by_date(@date)).to eq(0)
+    end
+
+    it "#favorite_customer" do
+      expect(@m1.favorite_customer).to eq(@c2)
+      expect(@m2.favorite_customer).to eq(@c2)
+      expect(@m3.favorite_customer).to eq(@c3)
+      expect(@m4.favorite_customer).to eq(nil)
     end
   end
 end

@@ -1,15 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Invoice, type: :model do
-  describe "relationships" do
-    it { should belong_to :customer }
-    it { should belong_to :merchant }
-    it { should have_many :transactions }
-    it { should have_many(:invoice_items) }
-    it { should have_many(:items).through(:invoice_items) }
-  end
-
-  describe "business logic" do
+RSpec.describe Api::V1::Merchants::MostItemsController do
+  describe "GET #index" do
     before(:each) do
       @m1, @m2, @m3, @m4 = create_list(:merchant, 4)
 
@@ -49,8 +41,27 @@ RSpec.describe Invoice, type: :model do
       # @m4 has no invoices/revenue -- will not show up at all
     end
 
-    it "::revenue_by_date" do
-      expect(Invoice.revenue_by_date(@date)).to eq(257 + 2100)
+    it "returns http success" do
+      get "/api/v1/merchants/most_items?quantity=2"
+      expect(response).to have_http_status(:success)
+    end
+
+    it "outputs data for x merchants with the highest number of items sold" do
+      get "/api/v1/merchants/most_items?quantity=2"
+      merchants = parse_api_1point0_response
+
+      expect(merchants.class).to eq(Array)
+      expect(merchants.count).to eq(2)
+
+      expected_first =  {
+        "id" => @m3.id.to_s,
+        "type" => "merchant",
+        "attributes" => {
+          "id" => @m3.id,
+          "name" => @m3.name
+        }
+      }
+      expect(merchants.first).to eq(expected_first)
     end
   end
 end
