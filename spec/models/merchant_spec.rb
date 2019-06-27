@@ -122,19 +122,19 @@ RSpec.describe Merchant, type: :model do
       expect(top_2_revenues_actual).to eq(top_2_revenues_expected)
     end
 
-    xit "::top_x_by_items_sold_ct" do
-      # expect(Merchant.top_x_by_items_sold_ct(1)).to eq([@m2])
-      # expect(Merchant.top_x_by_items_sold_ct(2)).to eq([@m2, @m3])
-      # expect(Merchant.top_x_by_items_sold_ct(3)).to eq([@m2, @m3, @m1])
-      # expect(Merchant.top_x_by_items_sold_ct(4)).to eq([@m2, @m3, @m1])
-      #
-      # top_3_revenues_expected = [42200, 2100, 257]
-      # top_3_revenues_actual = Merchant.top_x_by_items_sold_ct(3).map(&:revenue)
-      # expect(top_3_revenues_actual).to eq(top_3_revenues_expected)
-      #
-      # top_2_revenues_expected = [42200, 2100]
-      # top_2_revenues_actual = Merchant.top_x_by_items_sold_ct(2).map(&:revenue)
-      # expect(top_2_revenues_actual).to eq(top_2_revenues_expected)
+    it "::top_x_by_items_sold_ct" do
+      expect(Merchant.top_x_by_items_sold_ct(1)).to eq([@m3])
+      expect(Merchant.top_x_by_items_sold_ct(2)).to eq([@m3, @m2])
+      expect(Merchant.top_x_by_items_sold_ct(3)).to eq([@m3, @m2, @m1])
+      expect(Merchant.top_x_by_items_sold_ct(4)).to eq([@m3, @m2, @m1])
+
+      top_3_counts_expected = [2100, 110, 21]
+      top_3_counts_actual = Merchant.top_x_by_items_sold_ct(3).map(&:item_ct)
+      expect(top_3_counts_actual).to eq(top_3_counts_expected)
+
+      top_2_counts_expected = [2100, 110]
+      top_2_counts_actual = Merchant.top_x_by_items_sold_ct(2).map(&:item_ct)
+      expect(top_2_counts_actual).to eq(top_2_counts_expected)
     end
   end
 end
