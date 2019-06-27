@@ -46,19 +46,8 @@ RSpec.describe Invoice, type: :model do
       # @m4 has no invoices/revenue -- will not show up at all
     end
 
-    xit "::revenue_by_date" do
-      # expect(Merchant.top_x_by_revenue(1)).to eq([@m2])
-      # expect(Merchant.top_x_by_revenue(2)).to eq([@m2, @m3])
-      # expect(Merchant.top_x_by_revenue(3)).to eq([@m2, @m3, @m1])
-      # expect(Merchant.top_x_by_revenue(4)).to eq([@m2, @m3, @m1])
-      #
-      # top_3_revenues_expected = [42200, 2100, 257]
-      # top_3_revenues_actual = Merchant.top_x_by_revenue(3).map(&:revenue)
-      # expect(top_3_revenues_actual).to eq(top_3_revenues_expected)
-      #
-      # top_2_revenues_expected = [42200, 2100]
-      # top_2_revenues_actual = Merchant.top_x_by_revenue(2).map(&:revenue)
-      # expect(top_2_revenues_actual).to eq(top_2_revenues_expected)
+    it "::revenue_by_date" do
+      expect(Invoice.revenue_by_date(@date)).to eq(257 + 2100)
     end
   end
 end
