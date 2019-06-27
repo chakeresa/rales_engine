@@ -59,21 +59,5 @@ RSpec.describe Api::V1::MerchantsController do
       }
       expect(merchant).to eq(expected_hash)
     end
-
-    it "finds by id" do
-      merchant_resource = @other_merchants.first
-      get "/api/v1/merchants/find?id=#{merchant_resource.id}"
-      merchant_json = parse_api_1point0_response
-
-      expected_hash =  {
-        "id" => merchant_resource.id.to_s,
-        "type" => "merchant",
-        "attributes" => {
-          "id" => merchant_resource.id,
-          "name" => merchant_resource.name
-        }
-      }
-      expect(merchant_json).to eq(expected_hash)
-    end
   end
 end
