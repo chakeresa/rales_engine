@@ -8,8 +8,9 @@ RSpec.describe Api::V1::Items::SearchController do
       @description = "Bob's Great Invention"
       @unit_price = 19999
       @merchant = create(:merchant)
-      @first_item = create(:item, name: @name, description: @description, unit_price: @unit_price, merchant: @merchant)
-      @sec_item = create(:item, name: @name, description: @description, unit_price: @unit_price, merchant: @merchant)
+      @created_at = "2012-03-27 14:53:59 UTC"
+      @updated_at = "2013-03-27 14:53:59 UTC"
+      @first_item, @sec_item = create_list(:item, 2, name: @name, description: @description, unit_price: @unit_price, merchant: @merchant, created_at: @created_at, updated_at: @updated_at)
       create_list(:item, @count - 2)
     end
 
@@ -60,8 +61,8 @@ RSpec.describe Api::V1::Items::SearchController do
       expect(items.first).to eq(expected_first)
     end
 
-    xit "outputs data for all items with a particular unit_price" do
-      get "/api/v1/items/find_all?unit_price=#{@unit_price}"
+    it "outputs data for all items with a particular unit_price" do
+      get "/api/v1/items/find_all?unit_price=#{format_price(@unit_price)}"
       items = parse_api_1point0_response
 
       expect(items.class).to eq(Array)
@@ -81,7 +82,7 @@ RSpec.describe Api::V1::Items::SearchController do
       expect(items.first).to eq(expected_first)
     end
 
-    xit "outputs data for all items with a particular created_at" do
+    it "outputs data for all items with a particular created_at" do
       get "/api/v1/items/find_all?created_at=#{@created_at}"
       items = parse_api_1point0_response
 
@@ -102,7 +103,7 @@ RSpec.describe Api::V1::Items::SearchController do
       expect(items.first).to eq(expected_first)
     end
 
-    xit "outputs data for all items with a particular updated_at" do
+    it "outputs data for all items with a particular updated_at" do
       get "/api/v1/items/find_all?updated_at=#{@updated_at}"
       items = parse_api_1point0_response
 
@@ -193,9 +194,9 @@ RSpec.describe Api::V1::Items::SearchController do
       expect(item_json).to eq(expected_hash)
     end
 
-    xit "finds an item by unit_price" do
+    it "finds an item by unit_price" do
       item_resource = @other_items.first
-      get "/api/v1/items/find?unit_price=#{item_resource.unit_price}"
+      get "/api/v1/items/find?unit_price=#{format_price(item_resource.unit_price)}"
       item_json = parse_api_1point0_response
 
       expected_hash =  {

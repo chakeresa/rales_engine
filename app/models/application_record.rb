@@ -6,7 +6,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def self.search_all(search_hash)
-    where(search_hash)
+    where(search_hash).order(:id)
   end
 
   private
