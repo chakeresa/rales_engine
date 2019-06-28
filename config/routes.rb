@@ -27,7 +27,12 @@ Rails.application.routes.draw do
         get "/random", to: "random#show"
       end
 
-      resources :items, only: [:index, :show]
+      resources :items, only: [:index, :show] do
+        scope module: :items do
+          resources :invoice_items, only: [:index]
+          get "/merchant", to: "merchants#show"
+        end
+      end
     end
   end
 end
