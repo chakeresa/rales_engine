@@ -66,5 +66,20 @@ RSpec.describe Item, type: :model do
       top_2_revenues_actual = Item.top_x_by_revenue(2).map(&:revenue)
       expect(top_2_revenues_actual).to eq(top_2_revenues_expected)
     end
+
+    it "::top_x_by_items_sold_ct" do
+      expect(Item.top_x_by_items_sold_ct(1)).to eq([@it31])
+      expect(Item.top_x_by_items_sold_ct(2)).to eq([@it31, @it22])
+      expect(Item.top_x_by_items_sold_ct(3)).to eq([@it31, @it22, @it21])
+      expect(Item.top_x_by_items_sold_ct(10)).to eq([@it31, @it22, @it21, @it13, @it12, @it11]) # @it41 has no sales
+
+      top_3_counts_expected = [2100, 70, 40]
+      top_3_counts_actual = Item.top_x_by_items_sold_ct(3).map(&:item_ct)
+      expect(top_3_counts_actual).to eq(top_3_counts_expected)
+
+      top_2_counts_expected = [2100, 70]
+      top_2_counts_actual = Item.top_x_by_items_sold_ct(2).map(&:item_ct)
+      expect(top_2_counts_actual).to eq(top_2_counts_expected)
+    end
   end
 end

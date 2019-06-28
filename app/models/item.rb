@@ -13,7 +13,13 @@ class Item < ApplicationRecord
         .limit(limit)
   end
 
-  def details_for_serialization
-    select([:id, :name, :description]).select([:unit_price, :merchant_id])
+  def self.top_x_by_items_sold_ct(limit)
+    self.select(:id, :name, :description).select(:unit_price, :merchant_id)
+        .select("SUM(invoice_items.quantity) AS item_ct")
+        .joins(invoices: :transactions)
+        .merge(Transaction.successful)
+        .group(:id)
+        .order("item_ct DESC")
+        .limit(limit)
   end
 end
