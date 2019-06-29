@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Merchants::MostRevenueController do
+RSpec.describe Api::V1::Items::MostRevenueController do
   describe "GET #index" do
     before(:each) do
       @m1, @m2, @m3, @m4 = create_list(:merchant, 4)
@@ -47,26 +47,29 @@ RSpec.describe Api::V1::Merchants::MostRevenueController do
     end
 
     it "returns http success" do
-      get "/api/v1/merchants/most_revenue?quantity=2"
+      get "/api/v1/items/most_revenue?quantity=2"
       expect(response).to have_http_status(:success)
     end
 
-    it "outputs data for x merchants with the highest revenue" do
-      get "/api/v1/merchants/most_revenue?quantity=2"
-      merchants = parse_api_1point0_response
+    it "outputs data for x items with the highest revenue" do
+      get "/api/v1/items/most_revenue?quantity=2"
+      items = parse_api_1point0_response
 
-      expect(merchants.class).to eq(Array)
-      expect(merchants.count).to eq(2)
+      expect(items.class).to eq(Array)
+      expect(items.count).to eq(2)
 
       expected_first =  {
-        "id" => @m2.id.to_s,
-        "type" => "merchant",
+        "id" => @it22.id.to_s,
+        "type" => "item",
         "attributes" => {
-          "id" => @m2.id,
-          "name" => @m2.name
+          "id" => @it22.id,
+          "name" => @it22.name,
+          "description" => @it22.description,
+          "unit_price" => format_price(@it22.unit_price),
+          "merchant_id" => @it22.merchant_id
         }
       }
-      expect(merchants.first).to eq(expected_first)
+      expect(items.first).to eq(expected_first)
     end
   end
 end

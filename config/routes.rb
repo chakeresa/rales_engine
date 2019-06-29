@@ -25,12 +25,15 @@ Rails.application.routes.draw do
         get "/find", to: "search#show"
         get "/find_all", to: "search#index"
         get "/random", to: "random#show"
+        get "/most_revenue", to: "most_revenue#index"
+        get "/most_items", to: "most_items#index"
       end
 
       resources :items, only: [:index, :show] do
         scope module: :items do
           resources :invoice_items, only: [:index]
           get "/merchant", to: "merchants#show"
+          get "/best_day", to: "best_day#show"
         end
       end
     end
