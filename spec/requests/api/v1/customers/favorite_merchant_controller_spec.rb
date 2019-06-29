@@ -1,13 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Customer, type: :model do
-  describe "relationships" do
-    it { should have_many :invoices}
-    it { should have_many(:merchants).through(:invoices) }
-    it { should have_many(:transactions).through(:invoices) }
-  end
-
-  describe "business intelligence" do
+RSpec.describe Api::V1::Customers::FavoriteMerchantController do
+  describe "GET #show" do
     before(:each) do
       @m1, @m2 = create_list(:merchant, 2)
       @c1, @c2, @c3 = create_list(:customer, 3)
@@ -28,10 +22,24 @@ RSpec.describe Customer, type: :model do
       @t241 = create(:transaction, invoice: @i23, result: "failed") # @c3
     end
 
-    it "#favorite_merchant" do
-      expect(@c1.favorite_merchant).to eq(@m1)
-      expect(@c2.favorite_merchant).to eq(@m2)
-      expect(@c3.favorite_merchant).to eq(nil)
+    it "returns http success" do
+      get "/api/v1/customers/#{@c2.id}/favorite_merchant"
+      expect(response).to have_http_status(:success)
+    end
+
+    it "outputs data for a merchant's merchant with the most successful transactions" do
+      get "/api/v1/customers/#{@c2.id}/favorite_merchant"
+      actual = parse_api_1point0_response
+
+      expected =  {
+        "id" => @m2.id.to_s,
+        "type" => "merchant",
+        "attributes" => {
+          "id" => @m2.id,
+          "name" => @m2.name
+        }
+      }
+      expect(actual).to eq(expected)
     end
   end
 end
