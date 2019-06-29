@@ -67,11 +67,11 @@ Rails.application.routes.draw do
         end
       end
 
-      # namespace :invoice_items do
-      #   get "/find", to: "search#show"
-      #   get "/find_all", to: "search#index"
+      namespace :invoice_items do
+        get "/find", to: "search#show"
+        get "/find_all", to: "search#index"
       #   get "/random", to: "random#show"
-      # end
+      end
 
       resources :invoice_items, only: [:index, :show] do
         # scope module: :invoice_items do
