@@ -36,6 +36,8 @@ Rails.application.routes.draw do
           get "/best_day", to: "best_day#show"
         end
       end
+
+      resources :customers, only: [:index, :show]
     end
   end
 end
