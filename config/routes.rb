@@ -76,7 +76,7 @@ Rails.application.routes.draw do
       resources :invoice_items, only: [:index, :show] do
         scope module: :invoice_items do
           get "/invoice", to: "invoices#show"
-        #   get "/item", to: "items#show"
+          get "/item", to: "items#show"
         end
       end
     end
