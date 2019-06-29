@@ -50,6 +50,11 @@ Rails.application.routes.draw do
           resources :transactions, only: [:index]
         end
       end
+
+      resources :invoices, only: [:index, :show] do
+        scope module: :invoices do
+        end
+      end
     end
   end
 end
