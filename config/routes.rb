@@ -43,7 +43,11 @@ Rails.application.routes.draw do
         get "/random", to: "random#show"
       end
 
-      resources :customers, only: [:index, :show]
+      resources :customers, only: [:index, :show] do
+        scope module: :customers do
+          resources :invoices, only: [:index]
+        end
+      end
     end
   end
 end
