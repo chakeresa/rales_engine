@@ -22,7 +22,7 @@ RSpec.describe Api::V1::Items::MerchantsController do
         "type" => "merchant",
         "attributes" => {
           "id" => @merchant.id,
-          "name" => @merchant.name,
+          "name" => @merchant.name
         }
       }
       expect(actual).to eq(expected)
