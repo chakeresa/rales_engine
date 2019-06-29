@@ -87,9 +87,9 @@ Rails.application.routes.draw do
       end
 
       resources :transactions, only: [:index, :show] do
-        # scope module: :transactions do
-        #   get "/invoice", to: "invoices#show"
-        # end
+        scope module: :transactions do
+          get "/invoice", to: "invoices#show"
+        end
       end
     end
   end
