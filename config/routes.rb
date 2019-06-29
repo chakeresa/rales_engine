@@ -80,11 +80,11 @@ Rails.application.routes.draw do
         end
       end
 
-      # namespace :transactions do
-      #   get "/find", to: "search#show"
-      #   get "/find_all", to: "search#index"
+      namespace :transactions do
+        get "/find", to: "search#show"
+        get "/find_all", to: "search#index"
       #   get "/random", to: "random#show"
-      # end
+      end
 
       resources :transactions, only: [:index, :show] do
         # scope module: :transactions do
