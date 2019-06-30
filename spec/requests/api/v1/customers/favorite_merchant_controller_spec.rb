@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Customers::FavoriteMerchantController do
+RSpec.describe Api::V1::Customers::FavoriteMerchantsController do
   describe "GET #show" do
     before(:each) do
       @m1, @m2 = create_list(:merchant, 2)

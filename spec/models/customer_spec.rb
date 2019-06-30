@@ -28,10 +28,10 @@ RSpec.describe Customer, type: :model do
       @t241 = create(:transaction, invoice: @i23, result: "failed") # @c3
     end
 
-    it "#favorite_merchant" do
-      expect(@c1.favorite_merchant).to eq(@m1)
-      expect(@c2.favorite_merchant).to eq(@m2)
-      expect(@c3.favorite_merchant).to eq(nil)
+    it "#favorite_merchants" do
+      expect(@c1.favorite_merchants(1)).to eq([@m1])
+      expect(@c2.favorite_merchants(4)).to eq([@m2, @m1])
+      expect(@c3.favorite_merchants(1)).to eq([])
     end
   end
 end
