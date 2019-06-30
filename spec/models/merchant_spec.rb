@@ -158,11 +158,11 @@ RSpec.describe Merchant, type: :model do
       expect(@m4.revenue_by_date(@date)).to eq(0)
     end
 
-    it "#favorite_customer" do
-      expect(@m1.favorite_customer).to eq(@c2)
-      expect(@m2.favorite_customer).to eq(@c2)
-      expect(@m3.favorite_customer).to eq(@c3)
-      expect(@m4.favorite_customer).to eq(nil)
+    it "#favorite_customers" do
+      expect(@m1.favorite_customers(1).first).to eq(@c2)
+      expect(@m2.favorite_customers(1).first).to eq(@c2)
+      expect(@m3.favorite_customers(1).first).to eq(@c3)
+      expect(@m4.favorite_customers(1)).to eq([])
     end
   end
 

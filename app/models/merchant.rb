@@ -29,14 +29,14 @@ class Merchant < ApplicationRecord
     invoices.revenue_by_date(date)
   end
 
-  def favorite_customer
+  def favorite_customers(limit)
     customers.select(:id, :first_name, :last_name)
              .select("COUNT(invoices.id) AS invoice_ct")
              .joins("INNER JOIN transactions ON invoices.id = transactions.invoice_id")
              .merge(Transaction.successful)
              .group(:id)
              .order("invoice_ct DESC")
-             .first
+             .limit(limit)
   end
 
   def customers_with_pending_invoices
