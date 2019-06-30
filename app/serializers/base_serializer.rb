@@ -4,7 +4,7 @@ class BaseSerializer
       {
         attributes: formatted_attributes(attr_hash)
       }
-    }.to_json
+    }
   end
 
   private
