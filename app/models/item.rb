@@ -23,7 +23,7 @@ class Item < ApplicationRecord
         .limit(limit)
   end
 
-  def best_day
+  def best_days(limit)
     self.invoices
         .select("DATE_TRUNC('day', invoices.created_at) AS date")
         .select("SUM(invoice_items.quantity) AS item_ct")
@@ -32,7 +32,6 @@ class Item < ApplicationRecord
         .group("date")
         .order("item_ct DESC")
         .order("date DESC")
-        .first
-        .date
+        .limit(limit)
   end
 end
