@@ -168,7 +168,7 @@ RSpec.describe Merchant, type: :model do
 
   describe 'boss mode' do
     it '#customers_with_pending_invoices' do
-      # GET /api/v1/merchants/:id/customers_with_pending_invoices returns a collection of customers which have pending (unpaid) invoices. A pending invoice has no transactions with a result of success. This means all transactions are failed. Postgres has an EXCEPT operator that might be useful. ActiveRecord also has a find_by_sql that might help.
+      # Merchant#customers_with_pending_invoices returns a collection of customers which have pending (unpaid) invoices. A pending invoice has no transactions with a result of success. This means all transactions are failed.
 
       merchant = create(:merchant)
       other_merchant = create(:merchant)
