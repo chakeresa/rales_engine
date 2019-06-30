@@ -38,4 +38,21 @@ class Merchant < ApplicationRecord
              .order("invoice_ct DESC")
              .first
   end
+
+  def customers_with_pending_invoices
+    sql_query = "SELECT DISTINCT c.id, c.first_name, c.last_name
+    FROM customers c
+      INNER JOIN (
+        SELECT i2.id, i2.customer_id, i2.merchant_id
+        FROM invoices i2
+          EXCEPT
+            SELECT i1.id, i1.customer_id, i1.merchant_id
+            FROM invoices i1
+              INNER JOIN transactions t ON i1.id = t.invoice_id
+            WHERE t.result = 'success'
+      ) i3 ON c.id = i3.customer_id
+    WHERE i3.merchant_id = #{id};"
+      
+    Customer.find_by_sql(sql_query)
+  end
 end
