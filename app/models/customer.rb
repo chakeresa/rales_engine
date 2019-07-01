@@ -3,13 +3,13 @@ class Customer < ApplicationRecord
   has_many :merchants, through: :invoices
   has_many :transactions, through: :invoices
 
-  def favorite_merchant
+  def favorite_merchants(limit)
     merchants.select(:id, :name)
              .select("COUNT(transactions.id) AS transaction_ct")
              .joins("INNER JOIN transactions ON invoices.id = transactions.invoice_id")
              .merge(Transaction.successful)
              .group(:id)
              .order("transaction_ct DESC")
-             .first
+             .limit(limit)
   end
 end

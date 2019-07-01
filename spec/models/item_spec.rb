@@ -83,7 +83,7 @@ RSpec.describe Item, type: :model do
     end
   end
 
-  it "business logic - #best_day" do
+  it "business logic - #best_days" do
     @item = create(:item)
     @other_item = create(:item)
 
@@ -112,6 +112,9 @@ RSpec.describe Item, type: :model do
     @t41 = create(:transaction, invoice: @i4)
     @t51 = create(:transaction, invoice: @i5, result: "failed")
 
-    expect(@item.best_day).to eq(@d21.to_date)
+    expect(@item.best_days(2).first.date).to eq(@d21.to_date)
+    expect(@item.best_days(2).last.date).to eq(@d11.to_date)
+
+    expect(@item.best_days(20).to_a.count).to eq(3)
   end
 end

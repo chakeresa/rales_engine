@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Items::BestDayController do
+RSpec.describe Api::V1::Items::BestDaysController do
   describe "GET #show" do
     before(:each) do
       @item = create(:item)
