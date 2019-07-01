@@ -15,7 +15,6 @@ class ApplicationRecord < ActiveRecord::Base
 
   private
 
-  # TO DO: delete if possible (refactor of Invoice::revenue_by_date)
   def self.date_criteria(date)
     if date
       beginning_of_day = Time.zone.parse(date)
